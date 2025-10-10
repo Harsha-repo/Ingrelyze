@@ -1,0 +1,161 @@
+/* Styles for ProductDisplay and AnalysisDisplay */
+
+.product-display {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.product-info-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+.product-info-card .card-body {
+  padding: 30px;
+}
+
+.product-info-card .card-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.product-details-row {
+  margin-bottom: 15px;
+}
+
+.ingredient-nutrient-card {
+  background: linear-gradient(135deg, #754ab3 0%, #f5576c 100%);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+.ingredient-nutrient-card .card-body {
+  padding: 25px;
+}
+
+.ingredient-nutrient-card .card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.ingredient-table th,
+.ingredient-table td {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 10px;
+  text-align: center;
+}
+
+.ingredient-table th {
+  background-color: rgba(255, 255, 255, 0.2);
+  font-weight: bold;
+}
+
+.analyze-button {
+  background: linear-gradient(135deg, #7e4991 0%, #fe00f1 100%) !important;
+  border: none !important;
+  border-radius: 25px;
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.analyze-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.analyze-button:active {
+  transform: translateY(0) scale(1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.analyze-button:disabled {
+  background: #ccc !important;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.analysis-display {
+  max-width: 1000px;
+  margin: 20px auto;
+}
+
+.analysis-card {
+  background: linear-gradient(135deg, #ac5cc9 0%, #b9e0e9 100%);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  color: #333;
+}
+
+.analysis-card .card-body {
+  padding: 30px;
+}
+
+.analysis-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #edeff3;
+  border-bottom: 3px solid #007bff;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #f3f4f6;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  margin-top: 20px;
+}
+
+.ingredient-list .list-group-item {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgba(0, 123, 255, 0.3);
+  margin-bottom: 5px;
+  border-radius: 8px;
+}
+
+.benefits-list .list-group-item {
+  background-color: rgba(170, 225, 183, 0.1);
+  border: 1px solid rgba(12, 64, 24, 0.3);
+  color: #061c0b;
+  margin-bottom: 5px;
+  border-radius: 8px;
+}
+
+.risks-list .list-group-item {
+  background-color: rgba(219, 103, 115, 0.1);
+  border: 1px solid rgba(82, 25, 31, 0.3);
+  color: #350e11;
+  margin-bottom: 5px;
+  border-radius: 8px;
+}
+
+.health-rating {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #36232b;
+  background-color: rgba(81, 51, 6, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+}
