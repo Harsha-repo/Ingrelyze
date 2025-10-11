@@ -1,94 +1,169 @@
-/* Styles for ProductDisplay and AnalysisDisplay */
+/* Modern Glassmorphism Styles for ProductDisplay and AnalysisDisplay */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
 .product-display {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  background-color: #000000;
+  min-height: 100vh;
 }
 
-.product-info-card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+.product-info-card,
+.ingredient-nutrient-card,
+.analysis-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
   margin-bottom: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: #ffffff; /* Ensure all text in cards is white */
 }
 
-.product-info-card .card-body {
+.product-info-card:hover,
+.ingredient-nutrient-card:hover,
+.analysis-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.product-info-card .card-body,
+.ingredient-nutrient-card .card-body,
+.analysis-card .card-body {
   padding: 30px;
+  color: #ffffff; /* Force white text in card bodies */
 }
 
-.product-info-card .card-title {
+.product-info-card .card-title,
+.ingredient-nutrient-card .card-title,
+.analysis-card .card-title {
   font-size: 1.8rem;
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 20px;
+  color: #ffffff;
+  text-align: center;
+  position: relative;
+}
+
+.product-info-card .card-title::after,
+.ingredient-nutrient-card .card-title::after,
+.analysis-card .card-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #00d4ff, #0099cc);
+  border-radius: 2px;
 }
 
 .product-details-row {
   margin-bottom: 15px;
+  color: #ffffff; /* Ensure product details text is white */
 }
 
-.ingredient-nutrient-card {
-  background: linear-gradient(135deg, #754ab3 0%, #f5576c 100%);
-  color: white;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px;
+.product-details-row strong {
+  color: #00d4ff;
+  font-weight: 500;
 }
 
-.ingredient-nutrient-card .card-body {
-  padding: 25px;
+.product-details-row > div {
+  color: #ffffff !important; /* Override any Bootstrap black text for values */
 }
 
-.ingredient-nutrient-card .card-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 15px;
+.ingredient-table,
+.nutrient-table {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .ingredient-table th,
-.ingredient-table td {
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 10px;
-  text-align: center;
+.ingredient-table td,
+.nutrient-table th,
+.nutrient-table td {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  text-align: left;
+  color: #ffffff !important; /* Force white text in table cells */
+  background-color: transparent; /* Ensure no white background */
 }
 
-.ingredient-table th {
-  background-color: rgba(255, 255, 255, 0.2);
-  font-weight: bold;
+.ingredient-table th,
+.nutrient-table th {
+  background: rgba(0, 212, 255, 0.2);
+  font-weight: 600;
+  color: #00d4ff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .analyze-button {
-  background: linear-gradient(135deg, #7e4991 0%, #fe00f1 100%) !important;
+  background: linear-gradient(135deg, #00d4ff, #0099cc) !important;
   border: none !important;
-  border-radius: 25px;
+  border-radius: 50px;
   padding: 15px 40px;
   font-size: 1.2rem;
-  font-weight: bold;
-  color: white !important;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
+  color: #000000 !important;
+  box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.analyze-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s;
+}
+
+.analyze-button:hover::before {
+  left: 100%;
 }
 
 .analyze-button:hover {
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 12px 35px rgba(0, 212, 255, 0.4);
+  color: #000000 !important;
 }
 
 .analyze-button:active {
   transform: translateY(0) scale(1);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 212, 255, 0.2);
 }
 
 .analyze-button:disabled {
-  background: #ccc !important;
+  background: rgba(128, 128, 128, 0.5) !important;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+  color: #666 !important;
 }
 
 .analysis-display {
@@ -96,66 +171,115 @@
   margin: 20px auto;
 }
 
-.analysis-card {
-  background: linear-gradient(135deg, #ac5cc9 0%, #b9e0e9 100%);
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  color: #333;
-}
-
-.analysis-card .card-body {
-  padding: 30px;
-}
-
 .analysis-title {
   font-size: 2rem;
-  font-weight: bold;
-  color: #edeff3;
-  border-bottom: 3px solid #007bff;
+  font-weight: 600;
+  color: #ffffff;
+  border-bottom: 3px solid rgba(0, 212, 255, 0.8);
   padding-bottom: 10px;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .section-title {
   font-size: 1.4rem;
-  font-weight: bold;
-  color: #f3f4f6;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 5px;
+  font-weight: 600;
+  color: #cdef67;
+  border-bottom: 2px solid rgba(0, 212, 255, 0.6);
+  padding-bottom: 8px;
   margin-bottom: 15px;
-  margin-top: 20px;
+  margin-top: 25px;
+  position: relative;
 }
 
-.ingredient-list .list-group-item {
-  background-color: rgb(255, 255, 255);
-  border: 1px solid rgba(0, 123, 255, 0.3);
-  margin-bottom: 5px;
-  border-radius: 8px;
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: #41f0f3;
+}
+
+.ingredient-list .list-group-item,
+.benefits-list .list-group-item,
+.risks-list .list-group-item {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 8px;
+  border-radius: 12px;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  padding: 12px 15px;
+}
+
+.ingredient-list .list-group-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
 }
 
 .benefits-list .list-group-item {
-  background-color: rgba(170, 225, 183, 0.1);
-  border: 1px solid rgba(12, 64, 24, 0.3);
-  color: #061c0b;
-  margin-bottom: 5px;
-  border-radius: 8px;
+  border-left: 4px solid #00ff88;
 }
 
 .risks-list .list-group-item {
-  background-color: rgba(219, 103, 115, 0.1);
-  border: 1px solid rgba(82, 25, 31, 0.3);
-  color: #350e11;
-  margin-bottom: 5px;
-  border-radius: 8px;
+  border-left: 4px solid #ff4444;
 }
 
 .health-rating {
   font-size: 1.3rem;
-  font-weight: bold;
-  color: #36232b;
-  background-color: rgba(81, 51, 6, 0.1);
-  padding: 10px;
-  border-radius: 8px;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 153, 204, 0.2));
+  padding: 15px 20px;
+  border-radius: 12px;
   display: inline-block;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.1);
+  margin-top: 10px;
+}
+
+h3 {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+strong {
+  color: #80ccfe;
+}
+
+pre {
+  background: rgba(0, 0, 0, 0.5);
+  color: #00d4ff;
+  border-radius: 10px;
+  padding: 15px;
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .product-display {
+    padding: 10px;
+  }
+
+  .product-info-card .card-body,
+  .ingredient-nutrient-card .card-body,
+  .analysis-card .card-body {
+    padding: 20px;
+  }
+
+  .product-info-card .card-title,
+  .ingredient-nutrient-card .card-title {
+    font-size: 1.5rem;
+  }
+
+  .analyze-button {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
 }

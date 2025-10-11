@@ -86,7 +86,7 @@ const ProductDisplay = ({ result }) => {
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Ingredient</th>
+                        <th >Ingredient</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -104,8 +104,8 @@ const ProductDisplay = ({ result }) => {
           )}
 
           {Object.keys(nutrients).length > 0 && (
-            <Col md={6}>
-              <Card className="mb-4 ingredient-nutrient-card">
+            <Col md={6} >
+              <Card className="mb-4  ingredient-nutrient-card">
                 <Card.Body>
                   <Card.Title>Nutritional Information (per serving)</Card.Title>
                   <Table striped bordered hover className="ingredient-table">

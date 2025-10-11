@@ -24,7 +24,7 @@ const AnalysisDisplay = ({ analysis }) => {
               <ListGroup className="mb-3 ingredient-list">
                 {Object.entries(Ingredients).map(([ingredient, description], idx) => (
                   <ListGroup.Item key={idx}>
-                    <strong>{ingredient}:</strong> {description}
+                    <strong>{ingredient} :</strong> {description}
                   </ListGroup.Item>
                 ))}
               </ListGroup>
