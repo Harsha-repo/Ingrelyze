@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { Form, Button, InputGroup, Row, Col } from 'react-bootstrap';
 import BarcodeScannerComponent from 'react-qr-barcode-scanner';
 import ProductDisplay from './ProductDisplay';
+import { useNavigate } from 'react-router-dom';
 
 const BarcodeScanner = () => {
   const [barcode, setBarcode] = useState('');
   const [scanning, setScanning] = useState(false);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleScan = (err, result) => {
     if (result) {
@@ -47,12 +50,32 @@ const BarcodeScanner = () => {
     }
   };
 
-
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    navigate('/');
+  };
 
   // Store the barcode in a variable for routing to backend
   // Routed via handleLookup function to Django API
 
   return (
+    <>
+      <Button 
+        variant="danger" 
+        onClick={handleLogout} 
+        size="sm"
+        style={{ 
+          position: 'fixed', 
+          top: '10px', 
+          right: '10px', 
+          zIndex: 1050 
+        }}
+      >
+        Logout
+      </Button>
+      <h1 className="text-center mb-4 ">Ingrelyze - Food Products Analyzer</h1>
+
     <Row className="justify-content-center">
       <Col md={8}>
         <InputGroup className="mb-3">
@@ -87,6 +110,8 @@ const BarcodeScanner = () => {
         )}
       </Col>
     </Row>
+
+    </>
   );
 };
 

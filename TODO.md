@@ -1,7 +1,7 @@
-# TODO: Improve CSS for AnalysisDisplay and ProductDisplay
+# TODO: Add Logout Button to BarcodeScanner Page
 
-- [x] Create frontend/src/components/styles.css with modern CSS styles (gradients, shadows, colors, spacing)
-- [x] Update frontend/src/components/AnalysisDisplay.jsx to use CSS classes instead of inline styles
-- [x] Update frontend/src/components/ProductDisplay.js to add custom CSS classes for styling
-- [x] Import styles.css in frontend/src/App.js
-- [x] Test the styling by running the app
+- [x] Import useNavigate from 'react-router-dom' in BarcodeScanner.js
+- [x] Add useNavigate hook inside the BarcodeScanner component
+- [x] Add handleLogout function: clear localStorage tokens (access_token, refresh_token) and navigate to '/'
+- [x] Add logout Button positioned fixed in top right corner (top: 10px, right: 10px) with onClick={handleLogout}
+- [x] Test logout functionality: Login, navigate to BarcodeScanner, click logout, verify redirect to login and tokens cleared

@@ -24,5 +24,6 @@ urlpatterns = [
     
     # api end points 
     path('api/v1/', include('database_management.urls')),
+    path('api/v1/auth/', include('AuthenticationApi.urls')),
     
 ]

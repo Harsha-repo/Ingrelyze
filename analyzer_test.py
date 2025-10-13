@@ -5,8 +5,9 @@ import json
 import re
 
 #  coca cola : 3174780000363
+# haldirams : 8904004403732
 
-barcode = "3174780000363"
+barcode = "8904004403732"
 url = f"http://localhost:5678/webhook-test/fetch-data/?code={barcode}"
 
 response = requests.get(url)

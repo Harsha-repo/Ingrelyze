@@ -206,7 +206,6 @@ body {
 .benefits-list .list-group-item,
 .risks-list .list-group-item {
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 8px;
   border-radius: 12px;
@@ -259,27 +258,4 @@ pre {
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
   border: 1px solid rgba(0, 212, 255, 0.3);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .product-display {
-    padding: 10px;
-  }
-
-  .product-info-card .card-body,
-  .ingredient-nutrient-card .card-body,
-  .analysis-card .card-body {
-    padding: 20px;
-  }
-
-  .product-info-card .card-title,
-  .ingredient-nutrient-card .card-title {
-    font-size: 1.5rem;
-  }
-
-  .analyze-button {
-    padding: 12px 30px;
-    font-size: 1rem;
-  }
 }
