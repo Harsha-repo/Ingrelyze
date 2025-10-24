@@ -3,13 +3,11 @@
 import requests
 import json
 import re
+# amul milk : 8901262150088
+# dairy yogurt : 4056489148739
 
-#  coca cola : 3174780000363
-# haldirams : 8904004403732
-# sprite : 8901764032912
-
-barcode = "3017620429484"  
-url = f"http://localhost:5678/webhook-test/fetch-data/?code={barcode}"
+barcode = "4056489148739"  
+url = f"http://localhost:5678/webhook-test/nutriments-analysis/?code={barcode}"
 
 
 response = requests.get(url)

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card, ListGroup } from 'react-bootstrap';
 import './styles.css';
 
 const AnalysisDisplay = ({ analysis }) => {
@@ -8,48 +7,51 @@ const AnalysisDisplay = ({ analysis }) => {
   const { code, product_name, Ingredients, Analysis, Health_rating } = analysis;
 
   return (
-    <div className="analysis-display">
-      <Card className="mt-4 analysis-card">
-        <Card.Body>
-          <Card.Title className="analysis-title">Analysis Report</Card.Title>
+    <div className="product-display mt-3">
+      <div className="mt-4 glass-card">
+        <div className="card-body">
+          <h3 className="card-title">Analysis Report</h3>
 
-          <h5 className="section-title">Product Code : {code}</h5>
-
-          <h5 className="section-title">Product Name : {product_name}</h5>
-          <p></p>
+          <p><strong>Product:</strong> {product_name} ({code})</p>
 
           {Ingredients && (
             <>
               <h5 className="section-title">Ingredients</h5>
-              <ListGroup className="mb-3 ingredient-list">
+              <div className="analysis-items-container">
                 {Object.entries(Ingredients).map(([ingredient, description], idx) => (
-                  <ListGroup.Item key={idx}>
-                    <strong>{ingredient} :</strong> {description}
-                  </ListGroup.Item>
+                  <div key={idx} className="glass-card analysis-item-card">
+                    <div className="card-body">
+                      <strong>{ingredient}:</strong> {description}
+                    </div>
+                  </div>
                 ))}
-              </ListGroup>
+              </div>
             </>
           )}
 
           {Analysis && (
             <>
               <h5 className="section-title">Benefits</h5>
-              <ListGroup className="mb-3 benefits-list">
+              <div className="analysis-items-container benefits-list">
                 {Analysis.benefits && Analysis.benefits.map((benefit, idx) => (
-                  <ListGroup.Item key={idx}>
-                    {benefit}
-                  </ListGroup.Item>
+                  <div key={idx} className="glass-card analysis-item-card">
+                    <div className="card-body">
+                      {benefit}
+                    </div>
+                  </div>
                 ))}
-              </ListGroup>
+              </div>
 
               <h5 className="section-title">Risks</h5>
-              <ListGroup className="mb-3 risks-list">
+              <div className="analysis-items-container risks-list">
                 {Analysis.risks && Analysis.risks.map((risk, idx) => (
-                  <ListGroup.Item key={idx}>
-                    {risk}
-                  </ListGroup.Item>
+                  <div key={idx} className="glass-card analysis-item-card">
+                    <div className="card-body">
+                      {risk}
+                    </div>
+                  </div>
                 ))}
-              </ListGroup>
+              </div>
             </>
           )}
 
@@ -59,8 +61,8 @@ const AnalysisDisplay = ({ analysis }) => {
               <p className="health-rating">{Health_rating}</p>
             </>
           )}
-        </Card.Body>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };

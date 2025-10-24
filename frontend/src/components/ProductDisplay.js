@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Table, Alert, Row, Col, Button } from 'react-bootstrap';
+import { Alert, Button } from 'react-bootstrap';
 import { preprocessProductData } from '../utils/preprocessData';
 import AnalysisDisplay from './AnalysisDisplay';
+import { analyzeIngredientsByBarcode } from './productApi.js';
 import './styles.css';
 
 
@@ -27,16 +28,10 @@ const ProductDisplay = ({ result }) => {
 
   const handleAnalyzeIngredients = async () => {
     setLoading(true);
+    setAnalysisResult(null); // Clear previous results
     try {
-      const response = await fetch('http://localhost:8000/database_webhook/analysis-lookup/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ barcode: code }),
-      });
-      const data = await response.json();
-      setAnalysisResult(data);
+      const result = await analyzeIngredientsByBarcode(code);
+      setAnalysisResult(result);
     } catch (error) {
       console.error('Error analyzing ingredients:', error);
       setAnalysisResult({ error: 'Failed to analyze ingredients' });
@@ -48,106 +43,59 @@ const ProductDisplay = ({ result }) => {
   return (
     <>
       <div className="product-display mt-3">
-        <h3 className="text-center mb-4">Product Information</h3>
-        <Card className="mb-4 product-info-card">
-          <Card.Body>
-            <Card.Title>Product Details</Card.Title>
-            <Row>
-              <Col md={3}>
-                <strong>Code:</strong> {code}
-              </Col>
-              <Col md={3}>
-                <strong>Product Name:</strong> {product_name}
-              </Col>
-              <Col md={3}>
-                <strong>Brand:</strong> {brands}
-              </Col>
-              <Col md={3}>
-                <strong>Quantity:</strong> {quantity}
-              </Col>
-            </Row>
-            {categories !== 'N/A' && (
-              <Row className="mt-2">
-                <Col md={12}>
-                  <strong>Categories:</strong> {categories}
-                </Col>
-              </Row>
+        <div className="mb-4 glass-card product-card">
+          <div className="card-body">
+            {/* Product Header */}
+            <div className="product-header">
+              <h2 className="product-name">{product_name}</h2>
+              <p className="product-brand">by {brands}</p>
+              <p className="product-quantity">{quantity}</p>
+            </div>
+
+            {/* Categories */}
+            {categories && categories !== 'N/A' && (
+              <div className="product-section">
+                <h4 className="section-title">Categories</h4>
+                <div className="tags-container">
+                  {categories.split(',').map((cat, index) => (
+                    <span key={index} className="tag category-tag">{cat.trim()}</span>
+                  ))}
+                </div>
+              </div>
             )}
-          </Card.Body>
-        </Card>
 
-        <Row>
-          {ingredients.length > 0 && (
-            <Col md={6}>
-              <Card className="mb-4 ingredient-nutrient-card">
-                <Card.Body>
-                  <Card.Title>Ingredients</Card.Title>
-                  <Table striped bordered hover className="ingredient-table">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th >Ingredient</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {ingredients.map((ingredient, index) => (
-                        <tr key={index}>
-                          <td>{index + 1}</td>
-                          <td>{ingredient}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </Card.Body>
-              </Card>
-            </Col>
-          )}
+            {/* Ingredients */}
+            {ingredients.length > 0 && (
+              <div className="product-section">
+                <h4 className="section-title">Ingredients</h4>
+                <div className="tags-container">
+                  {ingredients.map((ingredient, index) => (
+                    <span key={index} className="tag ingredient-tag">{ingredient}</span>
+                  ))}
+                </div>
+              </div>
+            )}
 
-          {Object.keys(nutrients).length > 0 && (
-            <Col md={6} >
-              <Card className="mb-4  ingredient-nutrient-card">
-                <Card.Body>
-                  <Card.Title>Nutritional Information (per serving)</Card.Title>
-                  <Table striped bordered hover className="ingredient-table">
-                    <thead>
-                      <tr>
-                        <th>Nutrient</th>
-                        <th>Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {Object.entries(nutrients).map(([key, value]) => (
-                        <tr key={key}>
-                          <td>{key}</td>
-                          <td>{value}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </Card.Body>
-              </Card>
-            </Col>
-          )}
-        </Row>
-
-        {/* Display any other fields not covered - but since processed, likely none */}
-        {Object.keys(processedData).filter(key => !['code', 'product_name', 'brands', 'quantity', 'categories', 'ingredients', 'nutrients', 'error'].includes(key)).length > 0 && (
-          <Card>
-            <Card.Body>
-              <Card.Title>Additional Information</Card.Title>
-              <pre>{JSON.stringify(
-                Object.fromEntries(
-                  Object.entries(processedData).filter(([key]) => !['code', 'product_name', 'brands', 'quantity', 'categories', 'ingredients', 'nutrients', 'error'].includes(key))
-                ),
-                null, 2
-              )}</pre>
-            </Card.Body>
-          </Card>
-        )}
+            {/* Nutritional Information */}
+            {Object.keys(nutrients).length > 0 && (
+              <div className="product-section">
+                <h4 className="section-title">Nutritional Information (per serving)</h4>
+                <div className="nutrients-grid">
+                  {Object.entries(nutrients).map(([key, value]) => (
+                    <div key={key} className="nutrient-item">
+                      <span className="nutrient-label">{key.replace(/_/g, ' ')}</span>
+                      <span className="nutrient-value">{value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
 
         {/* Analyze Ingredients Button */}
         <div className="text-center mt-4">
-          <Button className="analyze-button btn" onClick={handleAnalyzeIngredients} disabled={loading}>
+          <Button className="lookup-button analyze-button" onClick={handleAnalyzeIngredients} disabled={loading}>
             {loading ? 'Analyzing...' : 'Analyze Ingredients'}
           </Button>
         </div>

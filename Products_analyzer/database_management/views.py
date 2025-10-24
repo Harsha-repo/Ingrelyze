@@ -14,7 +14,6 @@ from rest_framework import status           # for giving the status codes for th
 from rest_framework.decorators import api_view  # to make a view as an api view (POST , GET)
 
 
-
 # Create your views here.
 
 
