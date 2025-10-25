@@ -1,0 +1,7 @@
+1. lookup and ingrelyze, nutrinal analyze
+
+2. ocr analyze
+
+3. add products
+
+4. presanalize chat bot recommendations

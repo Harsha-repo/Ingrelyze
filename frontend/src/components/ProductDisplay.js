@@ -42,8 +42,8 @@ const ProductDisplay = ({ result }) => {
 
   return (
     <>
-      <div className="product-display mt-3">
-        <div className="mb-4 glass-card product-card">
+      <div className="product-display mt-4">
+        <div className="mb-6 glass-card product-card">
           <div className="card-body">
             {/* Product Header */}
             <div className="product-header">

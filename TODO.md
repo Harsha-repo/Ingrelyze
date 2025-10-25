@@ -1,7 +1,19 @@
-# TODO: Add Logout Button to BarcodeScanner Page
+# TODO List for Component Review and Implementation
 
-- [x] Import useNavigate from 'react-router-dom' in BarcodeScanner.js
-- [x] Add useNavigate hook inside the BarcodeScanner component
-- [x] Add handleLogout function: clear localStorage tokens (access_token, refresh_token) and navigate to '/'
-- [x] Add logout Button positioned fixed in top right corner (top: 10px, right: 10px) with onClick={handleLogout}
-- [x] Test logout functionality: Login, navigate to BarcodeScanner, click logout, verify redirect to login and tokens cleared
+## Issues Identified
+- Duplicate `productApi.js` file in `frontend/src/components/Authentications/` - identical to `frontend/src/components/productApi.js`. Remove the duplicate.
+- Placeholder components (`Ingrelyze.js`, `InstantAnalyzer.js`, `NewAddOn.js`, `ChatBot.js`) need implementation.
+- Route for `/dashboard` is BarcodeScanner, but Navbar links Ingrelyze to `/ingrelyze`. Adjust routes and navigation for consistency.
+- Login navigates to `/dashboard`, but main feature is Ingrelyze (scanner). Change navigation to `/ingrelyze`.
+- Implement incomplete functionalities for placeholder components based on app theme (food analysis).
+
+## Tasks
+- [x] Remove duplicate `productApi.js` in `Authentications/` folder.
+- [x] Change Login.jsx to navigate to `/ingrelyze` instead of `/dashboard`.
+- [x] Update App.js routes: Make `/ingrelyze` use BarcodeScanner, `/dashboard` use Ingrelyze (implement as dashboard).
+- [x] Implement Ingrelyze.js as a dashboard welcome page.
+- [x] Implement InstantAnalyzer.js with form for manual ingredient input and mock analysis display.
+- [x] Implement NewAddOn.js with form to add new products (mock functionality).
+- [x] Implement ChatBot.js with simple chat interface (mock responses).
+- [x] Verify all imports, routes, and linkages are correct.
+- [x] Test component functionalities and ensure no errors.
