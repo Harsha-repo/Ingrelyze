@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert, Button, Row, Col } from 'react-bootstrap';
 import { preprocessProductData } from '../utils/preprocessData';
 import AnalysisDisplay from './AnalysisDisplay';
-import { analyzeIngredientsByBarcode } from './productApi.js';
+import NutrientAnalysisDisplay from './NutrientAnalysisDisplay';
+import { analyzeIngredientsByBarcode, analyzeNutrientsByBarcode } from './productApi.js';
 import './styles.css';
 
 
 const ProductDisplay = ({ result }) => {
   const [analysisResult, setAnalysisResult] = useState(null);
+  const [nutrientAnalysisResult, setNutrientAnalysisResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [nutrientLoading, setNutrientLoading] = useState(false);
 
   useEffect(() => {
     setAnalysisResult(null);
+    setNutrientAnalysisResult(null);
   }, [result]);
 
   if (!result) return null;
@@ -37,6 +41,20 @@ const ProductDisplay = ({ result }) => {
       setAnalysisResult({ error: 'Failed to analyze ingredients' });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAnalyzeNutrients = async () => {
+    setNutrientLoading(true);
+    setNutrientAnalysisResult(null); // Clear previous results
+    try {
+      const result = await analyzeNutrientsByBarcode(code);
+      setNutrientAnalysisResult(result);
+    } catch (error) {
+      console.error('Error analyzing nutrients:', error);
+      setNutrientAnalysisResult({ error: 'Failed to analyze nutrients' });
+    } finally {
+      setNutrientLoading(false);
     }
   };
 
@@ -93,15 +111,32 @@ const ProductDisplay = ({ result }) => {
           </div>
         </div>
 
-        {/* Analyze Ingredients Button */}
-        <div className="text-center mt-4">
-          <Button className="lookup-button analyze-button" onClick={handleAnalyzeIngredients} disabled={loading}>
-            {loading ? 'Analyzing...' : 'Analyze Ingredients'}
-          </Button>
+        {/* Analyze Buttons */}
+        <div className="text-center mt-6">
+          <Row className="justify-content-center">
+            <Col xs={12} sm={6} className="mb-2 mb-sm-0">
+              <Button className="lookup-button analyze-button" onClick={handleAnalyzeIngredients} disabled={loading}>
+                {loading ? 'Analyzing...' : 'Analyze Ingredients'}
+              </Button>
+            </Col>
+            <Col xs={12} sm={6}>
+              <Button className="lookup-button analyze-button" onClick={handleAnalyzeNutrients} disabled={nutrientLoading}>
+                {nutrientLoading ? 'Analyzing...' : 'Analyze Nutrients'}
+              </Button>
+            </Col>
+          </Row>
         </div>
 
-        {/* Display Analysis Result */}
-        {analysisResult && <AnalysisDisplay analysis={analysisResult} />}
+        {/* Display Analysis Results */}
+        <Row className="mt-4">
+          <Col md={6} className="analysis-display-container" style={{ paddingLeft: '10px', paddingRight: '10px' }}>
+            {analysisResult && <AnalysisDisplay analysis={analysisResult} />}
+          </Col>
+
+          <Col md={6} className="analysis-display-container" style={{ paddingLeft: '10px', paddingRight: '10px' }}>
+            {nutrientAnalysisResult && <NutrientAnalysisDisplay analysis={nutrientAnalysisResult} />}
+          </Col>
+        </Row>
       </div>
     </>
   );

@@ -52,6 +52,49 @@ def barcode_lookup(request):
 
 @csrf_exempt
 @require_http_methods(["POST", "GET", "OPTIONS"])
+def nutrient_analysis_lookup(request):
+    if request.method == 'OPTIONS':
+        response = JsonResponse({})
+        response['Access-Control-Allow-Origin'] = '*'
+        response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+        response['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
+    else:
+        try:
+            data = json.loads(request.body)
+            barcode = data.get('barcode')
+            user_type = data.get('user_type', '')  # Get user_type from request, default to empty string
+
+            if not barcode:
+                response = JsonResponse({'error': 'Barcode is required'}, status=400)
+            else:
+                # Include user_type in the webhook URL if provided
+                url = f"http://localhost:5678/webhook/nutriments-analysis/?code={barcode}"
+                if user_type:
+                    url += f"&user_type={user_type}"
+
+                webhook_response = requests.get(url)        # fetches the nutrient analysis data from webhook
+                webhook_response.raise_for_status()
+                json_data = webhook_response.json()
+                print(f"User Type: {user_type}")
+                print(json_data)
+                response = JsonResponse(json_data, safe=False)
+        except requests.exceptions.RequestException as req_err:
+            response = JsonResponse({'error': f'Request error: {str(req_err)}'}, status=500)
+        except json.JSONDecodeError as json_err:
+            response = JsonResponse({'error': f'JSON decode error: {str(json_err)}'}, status=500)
+        except Exception as e:
+            response = JsonResponse({'error': str(e)}, status=500)
+
+    # Add CORS headers
+    response['Access-Control-Allow-Origin'] = '*'
+    response['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+    response['Access-Control-Allow-Headers'] = 'Content-Type'
+    return response
+
+
+@csrf_exempt
+@require_http_methods(["POST", "GET", "OPTIONS"])
 def analysis_lookup(request):
     if request.method == 'OPTIONS':
         response = JsonResponse({})
@@ -63,13 +106,20 @@ def analysis_lookup(request):
         try:
             data = json.loads(request.body)
             barcode = data.get('barcode')
+            user_type = data.get('user_type', '')  # Get user_type from request, default to empty string
+
             if not barcode:
                 response = JsonResponse({'error': 'Barcode is required'}, status=400)
             else:
-                url = f"http://localhost:5678/webhook/fetch-data/?code={barcode}"  # Assuming different webhook endpoint for analysis
+                # Include user_type in the webhook URL if provided
+                url = f"http://localhost:5678/webhook/fetch-data/?code={barcode}"
+                if user_type:
+                    url += f"&user_type={user_type}"
+
                 webhook_response = requests.get(url, timeout=20)        # fetches the analysis data from webhook
                 webhook_response.raise_for_status()
                 json_data = webhook_response.json()
+                print(f"User Type: {user_type}")
                 print(json_data)
                 response = JsonResponse(json_data, safe=False)
         except requests.exceptions.RequestException as req_err:

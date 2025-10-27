@@ -4,11 +4,11 @@ import './styles.css';
 const AnalysisDisplay = ({ analysis }) => {
   if (!analysis) return null;
 
-  const { code, product_name, Ingredients, Analysis, Health_rating } = analysis;
+  const { code, product_name, Ingredients, Analysis, user_type, user_type_impact, Health_rating } = analysis;
 
   return (
-    <div className="product-display mt-3">
-      <div className="mt-4 glass-card">
+    <div className="analysis-display-container">
+      <div className="glass-card">
         <div className="card-body">
           <h3 className="card-title">Analysis Report</h3>
 
@@ -55,12 +55,26 @@ const AnalysisDisplay = ({ analysis }) => {
             </>
           )}
 
-          {Health_rating && (
+          {user_type && (
+            <>
+              <h5 className="section-title">User Type</h5>
+              <p className="user-type">{user_type}</p>
+            </>
+          )}
+
+          {user_type_impact && (
+            <>
+              <h5 className="section-title">User Type Impact</h5>
+              <p className="user-type-impact">{user_type_impact}</p>
+            </>
+          )}
+
+          {/* {Health_rating && (
             <>
               <h5 className="section-title">Health Rating</h5>
               <p className="health-rating">{Health_rating}</p>
             </>
-          )}
+          )} */}
         </div>
       </div>
     </div>

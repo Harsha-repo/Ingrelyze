@@ -32,7 +32,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .dashboard-content {
   width: 100%;
-  max-width: 900px;
+  max-width: 1100px;
 }
 
 /* ========================================================================== */
@@ -313,9 +313,204 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 10px;
 }
 
+/* Nutrient Analysis Display Styles */
+.nutrient-analysis-card {
+  max-width: none;
+  width: 100%;
+}
+
+.product-info-section {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.product-name-display {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #e6edf3;
+  margin-bottom: 0.5rem;
+}
+
+.user-category {
+  font-size: 0.9rem;
+  color: #8b949e;
+  margin-bottom: 0;
+}
+
+.nutrients-breakdown {
+  margin-bottom: 2rem;
+}
+
+.nutrients-breakdown .section-title {
+  margin-bottom: 1.5rem;
+}
+
+.nutrients-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.nutrient-card {
+  background: rgba(33, 38, 45, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: all 0.3s ease;
+  margin-bottom: 0;
+}
+
+.nutrient-card:hover {
+  transform: translateY(-2px);
+  background: rgba(43, 48, 55, 0.8);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.nutrient-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.nutrient-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #58a6ff;
+  text-transform: capitalize;
+}
+
+.nutrient-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #e6edf3;
+}
+
+.rda-bar-container {
+  margin-bottom: 0.75rem;
+}
+
+.rda-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+.rda-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.rda-percent {
+  font-size: 0.8rem;
+  color: #8b949e;
+  font-weight: 500;
+}
+
+.nutrient-comment {
+  font-size: 0.85rem;
+  color: #c9d1d9;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.summary-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+}
+
+.summary-section .section-title {
+  margin-bottom: 1.5rem;
+}
+
+.summary-item {
+  margin-bottom: 1.5rem;
+}
+
+.summary-item:last-child {
+  margin-bottom: 0;
+}
+
+.summary-subtitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #e6edf3;
+}
+
+.summary-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.summary-point {
+  font-size: 0.9rem;
+  color: #c9d1d9;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.summary-point:last-child {
+  margin-bottom: 0;
+}
+
+.summary-point::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #58a6ff;
+  font-weight: bold;
+}
+
+.strengths .summary-point::before {
+  color: #238636;
+}
+
+.cautions .summary-point::before {
+  color: #d29922;
+}
+
+.suitability-text {
+  font-size: 0.9rem;
+  color: #c9d1d9;
+  line-height: 1.5;
+  background: rgba(88, 166, 255, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #58a6ff;
+}
+
 /* ========================================================================== */
 /*    New Product Display Styles
 /* ========================================================================== */
+
+/* Analysis Display Container for Side-by-Side Layout */
+.analysis-display-container {
+  height: 100%;
+}
+
+.analysis-display-container .glass-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.analysis-display-container .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
 
 .product-card {
   max-width: none;
@@ -328,7 +523,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .product-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 0.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }

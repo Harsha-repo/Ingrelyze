@@ -9,12 +9,13 @@ const handleResponse = async (response) => {
 };
 
 export const analyzeIngredientsByBarcode = async (barcode) => {
+  const userType = localStorage.getItem('userType') || '';
   const response = await fetch(`${API_BASE_URL}/analysis-lookup/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ barcode }),
+    body: JSON.stringify({ barcode, user_type: userType }),
   });
   return handleResponse(response);
 };
@@ -26,6 +27,18 @@ export const lookupBarcode = async (barcode) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ barcode }),
+  });
+  return handleResponse(response);
+};
+
+export const analyzeNutrientsByBarcode = async (barcode) => {
+  const userType = localStorage.getItem('userType') || '';
+  const response = await fetch(`${API_BASE_URL}/nutrient-analysis-lookup/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ barcode, user_type: userType }),
   });
   return handleResponse(response);
 };

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Form, Button, InputGroup, Row, Col } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Form, Button, InputGroup, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import BarcodeScannerComponent from 'react-qr-barcode-scanner';
 import ProductDisplay from './ProductDisplay';
 import { lookupBarcode } from './productApi.js';
@@ -12,6 +12,30 @@ const BarcodeScanner = () => {
   const [scanning, setScanning] = useState(false);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [userType, setUserType] = useState(localStorage.getItem('userType') || '');
+
+  // Listen for localStorage changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setUserType(localStorage.getItem('userType') || '');
+    };
+
+    // Listen for custom event when userType changes
+    window.addEventListener('userTypeChanged', handleStorageChange);
+
+    // Also check localStorage periodically (fallback)
+    const interval = setInterval(() => {
+      const currentUserType = localStorage.getItem('userType') || '';
+      if (currentUserType !== userType) {
+        setUserType(currentUserType);
+      }
+    }, 500);
+
+    return () => {
+      window.removeEventListener('userTypeChanged', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [userType]);
 
   const handleScan = (err, result) => {
     if (result) {
@@ -54,7 +78,7 @@ const BarcodeScanner = () => {
         <p className="lead text-secondary mb-5">Analyze food products by scanning their barcode.</p>
 
         <Row className="justify-content-center">
-          <Col md={10} lg={8}>
+          <Col md={14} lg={14}>
             <InputGroup className="mb-3 shadow-lg" size="lg">
               <Form.Control
                 type="text"
@@ -68,9 +92,30 @@ const BarcodeScanner = () => {
               </Button>
             </InputGroup>
             <div className="d-grid">
-              <Button className="lookup-button" onClick={handleLookup} disabled={!barcode || loading}>
-                {loading ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> : 'Lookup Barcode'}
-              </Button>
+              {!userType ? (
+                <OverlayTrigger
+                  placement="top"
+                  overlay={<Tooltip>Please select a user type from the navbar first</Tooltip>}
+                >
+                  <span>
+                    <Button
+                      className="lookup-button"
+                      onClick={handleLookup}
+                      disabled={!barcode || !userType || loading}
+                    >
+                      {loading ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> : 'Lookup Barcode'}
+                    </Button>
+                  </span>
+                </OverlayTrigger>
+              ) : (
+                <Button
+                  className="lookup-button"
+                  onClick={handleLookup}
+                  disabled={!barcode || !userType || loading}
+                >
+                  {loading ? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> : 'Lookup Barcode'}
+                </Button>
+              )}
             </div>
             <ProductDisplay result={result} />
             {scanning && (
