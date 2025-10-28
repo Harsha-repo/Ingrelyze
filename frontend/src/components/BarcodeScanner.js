@@ -1,11 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Form, Button, InputGroup, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import BarcodeScannerComponent from 'react-qr-barcode-scanner';
+import Quagga from '@ericblade/quagga2';
+import BarcodeScannerComponent from './BarcodeScannerComponent';
 import ProductDisplay from './ProductDisplay';
 import { lookupBarcode } from './productApi.js';
 import './styles.css';
-
-
 
 const BarcodeScanner = () => {
   const [barcode, setBarcode] = useState('');
@@ -14,38 +14,28 @@ const BarcodeScanner = () => {
   const [loading, setLoading] = useState(false);
   const [userType, setUserType] = useState(localStorage.getItem('userType') || '');
 
-  // Listen for localStorage changes
   useEffect(() => {
     const handleStorageChange = () => {
       setUserType(localStorage.getItem('userType') || '');
     };
 
-    // Listen for custom event when userType changes
     window.addEventListener('userTypeChanged', handleStorageChange);
-
-    // Also check localStorage periodically (fallback)
-    const interval = setInterval(() => {
-      const currentUserType = localStorage.getItem('userType') || '';
-      if (currentUserType !== userType) {
-        setUserType(currentUserType);
-      }
-    }, 500);
 
     return () => {
       window.removeEventListener('userTypeChanged', handleStorageChange);
-      clearInterval(interval);
     };
-  }, [userType]);
+  }, []);
 
-  const handleScan = (err, result) => {
-    if (result) {
-      setBarcode(result.text);
-      setScanning(false);
+  const handleDetected = (detectedResult) => {
+    if (detectedResult && detectedResult.codeResult) {
+      setBarcode(detectedResult.codeResult.code);
+      stopScan();
     }
   };
 
-  const startScan = () => {
-    setScanning(true);
+  const stopScan = () => {
+    Quagga.stop();
+    setScanning(false);
   };
 
   const handleInputChange = (e) => {
@@ -53,23 +43,19 @@ const BarcodeScanner = () => {
   };
 
   const handleLookup = async () => {
-
     if (!barcode) return;
     try {
       setLoading(true);
       const data = await lookupBarcode(barcode);
       setResult(data);
-    } 
+    }
     catch (error) {
       console.error('Error:', error);
       setResult({ error: error.detail || 'Failed to lookup barcode' });
-    }finally {
-      setLoading(false);  
+    } finally {
+      setLoading(false);
     }
   };
-
-  // Store the barcode in a variable for routing to backend
-  // Routed via handleLookup function to Django API
 
   return (
     <div className="dashboard-container">
@@ -82,12 +68,12 @@ const BarcodeScanner = () => {
             <InputGroup className="mb-3 shadow-lg" size="lg">
               <Form.Control
                 type="text"
-                className="form-control-glass" 
+                className="form-control-glass"
                 value={barcode}
                 onChange={handleInputChange}
                 placeholder="Enter or scan barcode"
               />
-              <Button variant="outline-secondary" onClick={startScan} className="scan-button border-secondary">
+              <Button variant="outline-secondary" onClick={() => setScanning(true)} className="scan-button border-secondary">
                 📷
               </Button>
             </InputGroup>
@@ -121,12 +107,8 @@ const BarcodeScanner = () => {
             {scanning && (
               <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1050 }}>
                 <div style={{ position: 'relative', width: '80%', maxWidth: '500px' }}>
-                  <BarcodeScannerComponent
-                    width="100%"
-                    height="100%"
-                    onUpdate={handleScan}
-                  />
-                  <Button variant="danger" onClick={() => setScanning(false)} style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                  <BarcodeScannerComponent onDetected={handleDetected} />
+                  <Button variant="danger" onClick={stopScan} style={{ position: 'absolute', top: '10px', right: '10px' }}>
                     Close
                   </Button>
                 </div>

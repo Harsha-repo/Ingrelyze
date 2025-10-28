@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8000/database_webhook';
+const API_BASE_URL = 'http://192.168.1.3:8000/database_webhook';
 
 const handleResponse = async (response) => {
   if (!response.ok) {
