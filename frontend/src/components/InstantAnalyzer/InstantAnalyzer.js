@@ -8,6 +8,7 @@ const InstantAnalyzer = () => {
     const [frontAnalysis, setFrontAnalysis] = useState(null);
     const [backAnalysis, setBackAnalysis] = useState(null);
     const [finalAnalysis, setFinalAnalysis] = useState(null);
+    const [productName, setProductName] = useState(null);
     const [loadingFront, setLoadingFront] = useState(false);
     const [loadingBack, setLoadingBack] = useState(false);
     const [loadingFinal, setLoadingFinal] = useState(false);
@@ -144,6 +145,13 @@ const InstantAnalyzer = () => {
                 const finalOutput = output.output || output;
                 console.log('Final output:', finalOutput);
                 setFrontAnalysis(finalOutput);
+
+                // Store product name from front analysis
+                const extractedProductName = finalOutput.Product_name || finalOutput.product_name;
+                if (extractedProductName) {
+                    setProductName(extractedProductName);
+                }
+
                 console.log('Front analysis state set');
             } else {
                 console.error('Front analysis failed:', response.status, response.statusText);
@@ -354,7 +362,7 @@ const InstantAnalyzer = () => {
                         <div className="card-body">
                             <h3 className="card-title">Back of Pack Details</h3>
                             <h5>Product Name</h5>
-                            <p className="mb-3">{backAnalysis.product_name || 'N/A'}</p>
+                            <p className="mb-3">{productName || 'N/A'}</p>
                             <h5>Ingredients</h5>
                             <div className="tags-container mb-3">
                                 {backAnalysis.ingredients && backAnalysis.ingredients.map((ing, idx) => (
