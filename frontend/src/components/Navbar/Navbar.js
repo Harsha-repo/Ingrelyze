@@ -50,7 +50,7 @@ const Navbar = () => {
             </div>
             <div className="navbar-center">
                 <Link to="/ingrelyze" className="nav-button">Ingrelyze</Link>
-                <Link to="/instant-analyzer" className="nav-button">Instant-Analyzer</Link>
+                <Link to="/instant-analyzer" className="nav-button">Photo-Analyzer</Link>
                 <Link to="/new-addon" className="nav-button">New-AddOn</Link>
                 <Link to="/chatbot" className="nav-button">Chat Bot</Link>
             </div>

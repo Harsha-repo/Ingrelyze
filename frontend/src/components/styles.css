@@ -629,3 +629,64 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   color: #e6edf3;
 }
+
+/* ========================================================================== */
+/*    Final Analysis Report Styles
+/* ========================================================================== */
+
+.final-analysis-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.final-analysis-section h5 {
+  color: #58a6ff;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+.final-analysis-section h6 {
+  color: #e6edf3;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.final-analysis-section p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.final-analysis-section strong {
+  font-size: 1.1rem;
+}
+
+.concern-tag {
+  background-color: rgba(248, 81, 73, 0.15);
+  color: #f85149;
+  border: 1px solid rgba(248, 81, 73, 0.4);
+}
+
+.positive-tag {
+  background-color: rgba(46, 160, 67, 0.15);
+  color: #3fb950;
+  border: 1px solid rgba(46, 160, 67, 0.4);
+}
+
+.health-rating-display {
+  background: linear-gradient(135deg, rgba(88, 166, 255, 0.2), rgba(31, 111, 235, 0.2));
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(88, 166, 255, 0.3);
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.health-rating-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #58a6ff;
+  margin-bottom: 0.5rem;
+}
