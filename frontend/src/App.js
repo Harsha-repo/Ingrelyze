@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Login from './components/Authentications/Login';
 import Register from './components/Authentications/Register';
@@ -11,6 +11,12 @@ import NewAddOn from './components/NewAddOn/NewAddOn';
 import ChatBot from './components/ChatBot/ChatBot';
 
 function App() {
+  const [currentPage, setCurrentPage] = useState('/dashboard');
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="App">
       <Routes>
@@ -20,7 +26,7 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <DashboardLayout onPageChange={handlePageChange}>
                 <Ingrelyze />
               </DashboardLayout>
             </ProtectedRoute>
@@ -30,7 +36,7 @@ function App() {
           path="/ingrelyze"
           element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <DashboardLayout onPageChange={handlePageChange}>
                 <BarcodeScanner />
               </DashboardLayout>
             </ProtectedRoute>
@@ -40,7 +46,7 @@ function App() {
           path="/instant-analyzer"
           element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <DashboardLayout onPageChange={handlePageChange}>
                 <InstantAnalyzer />
               </DashboardLayout>
             </ProtectedRoute>
@@ -50,7 +56,7 @@ function App() {
           path="/new-addon"
           element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <DashboardLayout onPageChange={handlePageChange}>
                 <NewAddOn />
               </DashboardLayout>
             </ProtectedRoute>
@@ -60,7 +66,7 @@ function App() {
           path="/chatbot"
           element={
             <ProtectedRoute>
-              <DashboardLayout>
+              <DashboardLayout onPageChange={handlePageChange}>
                 <ChatBot />
               </DashboardLayout>
             </ProtectedRoute>

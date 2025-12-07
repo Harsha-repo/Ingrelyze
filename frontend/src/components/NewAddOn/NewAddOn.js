@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Alert, Row, Col } from 'react-bootstrap';
 import { addNewProduct } from '../productApi';
 import '../styles.css';
@@ -21,6 +21,28 @@ const NewAddOn = () => {
     const [nutrimentFields, setNutrimentFields] = useState([{ key: '', value: '' }]);
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const savedFormData = localStorage.getItem('newAddonFormData');
+        const savedNutrimentFields = localStorage.getItem('newAddonNutrimentFields');
+        const savedMessage = localStorage.getItem('newAddonMessage');
+
+        if (savedFormData) setFormData(JSON.parse(savedFormData));
+        if (savedNutrimentFields) setNutrimentFields(JSON.parse(savedNutrimentFields));
+        if (savedMessage) setMessage(savedMessage);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('newAddonFormData', JSON.stringify(formData));
+    }, [formData]);
+
+    useEffect(() => {
+        localStorage.setItem('newAddonNutrimentFields', JSON.stringify(nutrimentFields));
+    }, [nutrimentFields]);
+
+    useEffect(() => {
+        localStorage.setItem('newAddonMessage', message);
+    }, [message]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

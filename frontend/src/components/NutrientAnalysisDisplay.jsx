@@ -2,9 +2,9 @@ import React from 'react';
 import './styles.css';
 
 const NutrientAnalysisDisplay = ({ analysis }) => {
-  if (!analysis || !analysis.output) return null;
+  if (!analysis) return null;
 
-  const { output } = analysis;
+  const output = analysis;
   const { product_name, user_category, reference_rda, product_analysis_per_serving, summary } = output;
 
   const getRdaColor = (percentage) => {

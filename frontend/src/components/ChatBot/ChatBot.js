@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, ListGroup } from 'react-bootstrap';
 import ReactMarkdown from 'react-markdown';
 import '../styles.css';
@@ -8,6 +8,33 @@ const ChatBot = () => {
         { text: 'Hello! How can I help you with food analysis today?', sender: 'bot' }
     ]);
     const [input, setInput] = useState('');
+
+    useEffect(() => {
+        try {
+            const savedMessages = localStorage.getItem('chatMessages');
+            if (savedMessages) {
+                const parsedMessages = JSON.parse(savedMessages);
+                if (Array.isArray(parsedMessages) && parsedMessages.length > 0) {
+                    setMessages(parsedMessages);
+                } else {
+                    setMessages([{ text: 'Hello! How can I help you with food analysis today?', sender: 'bot' }]);
+                }
+            } else {
+                setMessages([{ text: 'Hello! How can I help you with food analysis today?', sender: 'bot' }]);
+            }
+        } catch (error) {
+            console.error('Error loading chat messages from localStorage:', error);
+            setMessages([{ text: 'Hello! How can I help you with food analysis today?', sender: 'bot' }]);
+        }
+    }, []);
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('chatMessages', JSON.stringify(messages));
+        } catch (error) {
+            console.error('Error saving chat messages to localStorage:', error);
+        }
+    }, [messages]);
 
     const clearChat = () => {
         setMessages([{ text: 'Hello! How can I help you with food analysis today?', sender: 'bot' }]);
@@ -23,7 +50,19 @@ const ChatBot = () => {
             const response = await fetch(`http://localhost:5678/webhook/chat-bot/?query=${query}`, { timeout: 30000 });
             if (response.ok) {
                 const data = await response.json();
-                const botResponse = { text: data.output || 'No response from bot.', sender: 'bot' };
+                let botText = data.output || 'No response from bot.';
+                // Check if the response is wrapped in markdown code block with JSON
+                if (botText.startsWith('```json\n') && botText.endsWith('\n```')) {
+                    const jsonContent = botText.slice(8, -4); // Remove ```json\n and \n```
+                    try {
+                        const parsed = JSON.parse(jsonContent);
+                        botText = parsed.output || botText; // Extract the inner output if available
+                    } catch (parseError) {
+                        // If parsing fails, keep the original text
+                        console.warn('Failed to parse wrapped JSON response:', parseError);
+                    }
+                }
+                const botResponse = { text: botText, sender: 'bot' };
                 setMessages(prev => [...prev, botResponse]);
             } else {
                 const errorResponse = { text: `Error: ${response.status} ${response.statusText}`, sender: 'bot' };
@@ -40,10 +79,10 @@ const ChatBot = () => {
     return (
         <div className="dashboard-container">
             <div className="dashboard-content text-center text-light">
-                <h1 className="display-4 mb-3 dashboard-header">Chat Bot</h1>
+                <h1 className="display-4 mb-3 dashboard-header">Nutri Bot</h1>
                 <p className="lead text-secondary mb-5">Ask questions about food ingredients and nutrition.</p>
 
-                <div className="glass-card " style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto', height: '500px', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                <div className="glass-card " style={{ padding: '2rem', maxWidth: '75vw', margin: '0 auto', height: '75vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
                     <div style={{ position: 'absolute', top: '1rem', left: '1rem', zIndex: 10 }}>
                         <Button variant="outline-secondary" onClick={clearChat} style={{ color: '#e6edf3', borderColor: '#e6edf3', fontSize: '0.8rem' }}>
                             Clear Chat
@@ -53,7 +92,7 @@ const ChatBot = () => {
                         <ListGroup variant="flush">
                             {messages.map((msg, idx) => (
                                 <ListGroup.Item
-                                    key={idx}
+                                    key={`${msg.sender}-${idx}-${msg.text.substring(0, 10)}`}
                                     className={`text-start ${msg.sender === 'user' ? 'text-end' : ''}`}
                                     style={{
                                         backgroundColor: msg.sender === 'user' ? 'rgba(88, 166, 255, 0.1)' : 'transparent',

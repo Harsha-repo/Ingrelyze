@@ -14,6 +14,22 @@ const ProductDisplay = ({ result }) => {
   const [nutrientLoading, setNutrientLoading] = useState(false);
 
   useEffect(() => {
+    const savedAnalysisResult = localStorage.getItem('analysisResult');
+    const savedNutrientAnalysisResult = localStorage.getItem('nutrientAnalysisResult');
+
+    if (savedAnalysisResult) setAnalysisResult(JSON.parse(savedAnalysisResult));
+    if (savedNutrientAnalysisResult) setNutrientAnalysisResult(JSON.parse(savedNutrientAnalysisResult));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('analysisResult', JSON.stringify(analysisResult));
+  }, [analysisResult]);
+
+  useEffect(() => {
+    localStorage.setItem('nutrientAnalysisResult', JSON.stringify(nutrientAnalysisResult));
+  }, [nutrientAnalysisResult]);
+
+  useEffect(() => {
     setAnalysisResult(null);
     setNutrientAnalysisResult(null);
   }, [result]);

@@ -1,10 +1,10 @@
 import React from 'react';
 import Navbar from './Navbar/Navbar';
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = ({ children, onPageChange }) => {
   return (
     <div>
-      <Navbar />
+      <Navbar onPageChange={onPageChange} />
       {children}
     </div>
   );

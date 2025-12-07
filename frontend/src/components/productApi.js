@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://192.168.1.6:8000/database_webhook';
+const API_BASE_URL = 'http://localhost:8000/database_webhook';
 
 const handleResponse = async (response) => {
   if (!response.ok) {
@@ -44,7 +44,7 @@ export const analyzeNutrientsByBarcode = async (barcode) => {
 };
 
 export const addNewProduct = async (productData) => {
-  const response = await fetch('http://localhost:5678/webhook/manual-insertion', {
+  const response = await fetch('http://localhost:3000/webhook/manual-insertion', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

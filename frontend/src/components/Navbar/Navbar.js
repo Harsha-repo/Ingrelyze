@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ onPageChange }) => {
     const navigate = useNavigate();
     const [userType, setUserType] = useState(localStorage.getItem('userType') || '');
 
@@ -49,10 +49,10 @@ const Navbar = () => {
                 </select>
             </div>
             <div className="navbar-center">
-                <Link to="/ingrelyze" className="nav-button">Ingrelyze</Link>
-                <Link to="/instant-analyzer" className="nav-button">Photo-Analyzer</Link>
-                <Link to="/new-addon" className="nav-button">New-AddOn</Link>
-                <Link to="/chatbot" className="nav-button">Chat Bot</Link>
+                <button onClick={() => { navigate('/ingrelyze'); onPageChange('/ingrelyze'); }} className="nav-button">Ingrelyze</button>
+                <button onClick={() => { navigate('/instant-analyzer'); onPageChange('/instant-analyzer'); }} className="nav-button">Photo-Analyzer</button>
+                <button onClick={() => { navigate('/new-addon'); onPageChange('/new-addon'); }} className="nav-button">New-AddOn</button>
+                <button onClick={() => { navigate('/chatbot'); onPageChange('/chatbot'); }} className="nav-button">Nutri Bot</button>
             </div>
             <div className="navbar-right">
                 <button onClick={handleLogout} className="logout-button">Logout</button>

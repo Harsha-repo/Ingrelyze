@@ -9,7 +9,7 @@ import json
 # sprite : 8901764032912
 
 # Configuration
-barcode = "3174780000363"
+barcode = "8901058851298"
 user_type = "Adult men"  # Change this to test different user types: "Adult men", "Adult women (moderate activity)", "Adult women (sedentary)", "Pregnant women"
 
 # Construct URL with user_type

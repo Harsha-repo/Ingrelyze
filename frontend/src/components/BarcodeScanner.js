@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, InputGroup, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Quagga from '@ericblade/quagga2';
-import BarcodeScannerComponent from './BarcodeScannerComponent';
 import ProductDisplay from './ProductDisplay';
 import { lookupBarcode } from './productApi.js';
 import './styles.css';
@@ -13,6 +12,22 @@ const BarcodeScanner = () => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [userType, setUserType] = useState(localStorage.getItem('userType') || '');
+
+  useEffect(() => {
+    const savedBarcode = localStorage.getItem('barcode');
+    const savedResult = localStorage.getItem('barcodeResult');
+
+    if (savedBarcode) setBarcode(savedBarcode);
+    if (savedResult) setResult(JSON.parse(savedResult));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('barcode', barcode);
+  }, [barcode]);
+
+  useEffect(() => {
+    localStorage.setItem('barcodeResult', JSON.stringify(result));
+  }, [result]);
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -26,14 +41,71 @@ const BarcodeScanner = () => {
     };
   }, []);
 
-  const handleDetected = (detectedResult) => {
-    if (detectedResult && detectedResult.codeResult) {
-      setBarcode(detectedResult.codeResult.code);
-      stopScan();
+  useEffect(() => {
+    if (scanning) {
+      startScanning();
+    } else {
+      stopScanning();
     }
+  }, [scanning]);
+
+  const startScanning = () => {
+    Quagga.init({
+      inputStream: {
+        name: "Live",
+        type: "LiveStream",
+        target: document.querySelector('#scanner-container'),
+        constraints: {
+          width: 1280,
+          height: 720,
+          facingMode: "environment",
+          aspectRatio: { min: 1, max: 2 }
+        },
+      },
+      locator: {
+        patchSize: "large",
+        halfSample: false
+      },
+      numOfWorkers: 4,
+      decoder: {
+        readers: [
+          "code_128_reader",
+          "ean_reader",
+          "ean_8_reader",
+          "code_39_reader",
+          "code_39_vin_reader",
+          "codabar_reader",
+          "upc_reader",
+          "upc_e_reader",
+          "i2of5_reader"
+        ],
+        debug: {
+          drawBoundingBox: true,
+          showFrequency: false,
+          drawScanline: true,
+          showPattern: false
+        },
+        multiple: false
+      },
+      locate: true
+    }, function(err) {
+      if (err) {
+        console.error('Quagga initialization error:', err);
+        return;
+      }
+      console.log('Quagga initialized successfully');
+      Quagga.start();
+    });
+
+    Quagga.onDetected(function(result) {
+      console.log('Barcode detected:', result.codeResult.code);
+      setBarcode(result.codeResult.code);
+      stopScanning();
+    });
   };
 
-  const stopScan = () => {
+  const stopScanning = () => {
+    Quagga.offDetected();
     Quagga.stop();
     setScanning(false);
   };
@@ -73,7 +145,7 @@ const BarcodeScanner = () => {
                 onChange={handleInputChange}
                 placeholder="Enter or scan barcode"
               />
-              <Button variant="outline-secondary" onClick={() => setScanning(true)} className="scan-button border-secondary">
+              <Button variant="outline-secondary" onClick={() => setScanning(!scanning)} className="scan-button border-secondary">
                 📷
               </Button>
             </InputGroup>
@@ -106,10 +178,10 @@ const BarcodeScanner = () => {
             <ProductDisplay result={result} />
             {scanning && (
               <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.8)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1050 }}>
-                <div style={{ position: 'relative', width: '80%', maxWidth: '500px' }}>
-                  <BarcodeScannerComponent onDetected={handleDetected} />
-                  <Button variant="danger" onClick={stopScan} style={{ position: 'absolute', top: '10px', right: '10px' }}>
-                    Close
+                <div style={{ position: 'relative', width: '450px', height: '300px', border: '2px solid white', borderRadius: '8px', overflow: 'hidden' }}>
+                  <div id="scanner-container" style={{ width: '100%', height: '100%' }}></div>
+                  <Button variant="danger" onClick={stopScanning} style={{ position: 'absolute', top: '5px', right: '5px', padding: '2px 8px', fontSize: '12px' }}>
+                    ✕
                   </Button>
                 </div>
               </div>

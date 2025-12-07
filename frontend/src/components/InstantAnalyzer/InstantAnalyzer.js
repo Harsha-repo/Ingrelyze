@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Form, Button, Row, Col, Table } from 'react-bootstrap';
 import '../styles.css';
 
@@ -18,6 +18,46 @@ const InstantAnalyzer = () => {
     const backVideoRef = useRef(null);
     const frontCanvasRef = useRef(null);
     const backCanvasRef = useRef(null);
+
+    useEffect(() => {
+        const savedFrontImage = localStorage.getItem('frontImage');
+        const savedBackImage = localStorage.getItem('backImage');
+        const savedFrontAnalysis = localStorage.getItem('frontAnalysis');
+        const savedBackAnalysis = localStorage.getItem('backAnalysis');
+        const savedFinalAnalysis = localStorage.getItem('finalAnalysis');
+        const savedProductName = localStorage.getItem('productName');
+
+        if (savedFrontImage) setFrontImage(savedFrontImage);
+        if (savedBackImage) setBackImage(savedBackImage);
+        if (savedFrontAnalysis) setFrontAnalysis(JSON.parse(savedFrontAnalysis));
+        if (savedBackAnalysis) setBackAnalysis(JSON.parse(savedBackAnalysis));
+        if (savedFinalAnalysis) setFinalAnalysis(JSON.parse(savedFinalAnalysis));
+        if (savedProductName) setProductName(savedProductName);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('frontImage', frontImage);
+    }, [frontImage]);
+
+    useEffect(() => {
+        localStorage.setItem('backImage', backImage);
+    }, [backImage]);
+
+    useEffect(() => {
+        localStorage.setItem('frontAnalysis', JSON.stringify(frontAnalysis));
+    }, [frontAnalysis]);
+
+    useEffect(() => {
+        localStorage.setItem('backAnalysis', JSON.stringify(backAnalysis));
+    }, [backAnalysis]);
+
+    useEffect(() => {
+        localStorage.setItem('finalAnalysis', JSON.stringify(finalAnalysis));
+    }, [finalAnalysis]);
+
+    useEffect(() => {
+        localStorage.setItem('productName', productName);
+    }, [productName]);
 
     const handleImageChange = (e, type) => {
         const file = e.target.files[0];
@@ -189,9 +229,9 @@ const InstantAnalyzer = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Back Parsed data:', data);
-                const output = Array.isArray(data) ? data[0].output : data;
+                const output = Array.isArray(data) ? data[0] : data;
                 console.log('Back Extracted output:', output);
-                // The data is nested under "output" key, so extract it
+                // Extract the actual output object from the response
                 let finalOutput = output.output || output;
                 console.log('Back Final output:', finalOutput);
 
@@ -211,6 +251,12 @@ const InstantAnalyzer = () => {
                 }
 
                 setBackAnalysis(finalOutput);
+
+                // Set product name from back analysis if not already set from front
+                if (!productName && finalOutput.product_name) {
+                    setProductName(finalOutput.product_name);
+                }
+
                 console.log('Back analysis state set');
             } else {
                 console.error('Back analysis failed:', response.status, response.statusText);
